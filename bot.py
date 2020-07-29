@@ -19,6 +19,7 @@ reddit = praw.Reddit(client_id = 'Tr5ZjYeYiKW7ug', client_secret = 'LSpNRsz_W5yB
 api = StreamableApi("ABotCreator@gmail.com","BotsAreGreat")
 vid_str = None
 embedVar = None
+
 @client.event
 async def on_ready():
     print("Bot Online")
@@ -39,15 +40,15 @@ async def embedVid(ctx,link):
     embedVar.set_footer(text="Requested by " + ctx.message.author.name)
     vid_str= submission.media["reddit_video"]["fallback_url"]
     audio_str = re.sub("_.*\.mp4","_audio.mp4",vid_str)
-    message=await ctx.send("Processing the video, please wait")
     urllib.request.urlretrieve(vid_str, 'video.mp4') 
     urllib.request.urlretrieve(audio_str, 'audio.mp4')
+    message=await ctx.send("Processing the video, please wait")
     vid=ffmpeg.input("./video.mp4")
     audio=ffmpeg.input("./audio.mp4")
     title = submission.title
-    for e in title:
-        if not e.isalnum():
-            e = '_'
+    if not title.isalnum():
+        title="final_vid"
+    print(title)
     ffmpeg.concat(vid,audio,v=1,a=1).output("./"+title+".mp4").run()
     await message.delete()
     if os.stat("./"+title+".mp4").st_size < 8000000:
@@ -55,11 +56,11 @@ async def embedVid(ctx,link):
         await ctx.send(file=discord.File("./"+title+".mp4"))
         await message.delete()
     else:
-        message = ctx.send("The video is larger than 8MB, please wait while its uploading to Streamable")
+        message = await ctx.send("The video is larger than 8MB, please wait while its uploading to Streamable")
         global api
         vid_dict = api.upload_video("./"+title+".mp4",title)
-        await message.delete()
         time.sleep(5)
+        await message.delete()
         await ctx.send("https://www.streamable.com/"+vid_dict['shortcode'])
     await ctx.send(embed=embedVar)
     os.remove("./video.mp4")
