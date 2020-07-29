@@ -1,5 +1,4 @@
 discord.py
-urllib
 praw
 pystreamable
 ffmpeg-python
