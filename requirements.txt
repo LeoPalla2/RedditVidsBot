@@ -1,7 +1,0 @@
-discord.py
-json
-urllib
-praw
-pystreamable
-ffmpeg-python
-regex
