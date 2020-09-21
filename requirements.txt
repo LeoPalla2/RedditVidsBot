@@ -2,3 +2,4 @@ discord.py
 praw
 pystreamable
 ffmpeg-python
+python-dotenv

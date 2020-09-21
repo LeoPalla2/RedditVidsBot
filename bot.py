@@ -11,7 +11,12 @@ import re
 import praw
 import time
 from pystreamable import StreamableApi
+from dotenv import load_dotenv
+from dotenv import find_dotenv
 
+
+load_dotenv()
+token = os.getenv('DISCORD_TOKEN')
 Client = discord.Client()
 bot_prefix = "!"
 client = commands.Bot(command_prefix=bot_prefix)
@@ -98,4 +103,4 @@ async def on_message(message):
 
 
 
-client.run("NzM1NTYwMzkyMTk3MTQ0NjEz.XxiCDw.vg4LDy8wD7NVT_ifXBBBswttiiY")
+client.run(token)
