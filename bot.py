@@ -39,7 +39,7 @@ async def embedVid(ctx,link):
     embedVar.add_field(name='Author',value=submission.author)
     embedVar.set_footer(text="Requested by " + ctx.message.author.name)
     vid_str= submission.media["reddit_video"]["fallback_url"]
-    audio_str = re.sub("_.*\.mp4","_audio.mp4",vid_str)
+    audio_str = re.sub(r"_.*\.mp4","_audio.mp4",vid_str)
     urllib.request.urlretrieve(vid_str, 'video.mp4') 
     urllib.request.urlretrieve(audio_str, 'audio.mp4')
     message=await ctx.send("Processing the video, please wait")
@@ -79,6 +79,22 @@ async def embedVid_error(ctx,error):
             await ctx.send(type(error.original))
     else:
         await ctx.send(type(error))
+
+
+
+@client.event
+async def on_message(message):
+    ctx = await client.get_context(message)
+    if ctx.valid:
+        await client.process_commands(message)
+    else:
+        if not message.author.bot and "reddit.com" in message.content:
+            link = re.search("(?P<url>https?://[^\s]+)",message.content).group("url")
+            submission = reddit.submission(url=link)
+            if submission.media is not None:
+                await embedVid(ctx,link)
+
+
 
 
 
