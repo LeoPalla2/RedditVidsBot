@@ -17,11 +17,18 @@ from dotenv import find_dotenv
 
 load_dotenv()
 token = os.getenv('DISCORD_TOKEN')
+client_id=os.getenv('CLIENT_ID')
+client_secret=os.getenv('CLIENT_SECRET')
+username=os.getenv('USERNAME')
+password=os.getenv('PASSWORD')
+user_agent=os.getenv('USER_AGENT')
+streamable_email=os.getenv('STREAMABLE_EMAIL')
+streamable_password=os.getenv('STREAMABLE_PASSWORD')
 Client = discord.Client()
 bot_prefix = "!"
 client = commands.Bot(command_prefix=bot_prefix)
-reddit = praw.Reddit(client_id = 'Tr5ZjYeYiKW7ug', client_secret = 'LSpNRsz_W5yBEVaDUZ_znCxbvyg', username = 'ABotCreator', password = 'BotsAreGreat', user_agent = 'RedditVidsBotv1')
-api = StreamableApi("ABotCreator@gmail.com","BotsAreGreat")
+reddit = praw.Reddit(client_id = client_id, client_secret = client_secret, username = username, password = password, user_agent = user_agent)
+api = StreamableApi(streamable_email,streamable_password)
 vid_str = None
 embedVar = None
 
